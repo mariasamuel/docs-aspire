@@ -1,7 +1,7 @@
 ---
 title: Aspire AI integrations compatibility matrix
 description: Learn which AI client integrations are compatible with which AI hosting integrations in .NET Aspire.
-ms.date: 08/20/2025
+ms.date: 09/23/2025
 ai-usage: ai-generated
 ---
 
@@ -13,12 +13,12 @@ ai-usage: ai-generated
 
 The following table shows the compatibility between Aspire AI hosting and client integrations:
 
-| **Hosting Integration**                    | **Aspire.OpenAI**            | **Aspire.Azure.AI.OpenAI**                    | **Aspire.Azure.AI.Inference** |
-|--------------------------------------------|------------------------------|-----------------------------------------------|-------------------------------|
-| `Aspire.Hosting.Azure.AIFoundry`          | ❌ No                       | ⚠️ Partial                                    | ✅ Yes (preferred)           |
-| `Aspire.Hosting.Azure.CognitiveServices`   | ❌ No                       | ✅ Yes (preferred)                            | ❌ No                        |
-| `Aspire.Hosting.OpenAI`                    | ✅ Yes (preferred)          | ✅ Yes                                        | ❌ No                        |
-| `Aspire.Hosting.GitHub.Models`              | ⚠️ Partial                  | ❌ No                                         | ✅ Yes (preferred)           |
+| **Hosting Integration** | **Aspire.OpenAI** | **Aspire.Azure.AI.OpenAI** | **Aspire.Azure.AI.Inference** |
+|--|--|--|--|
+| `Aspire.Hosting.Azure.AIFoundry` | ❌ No | ⚠️ Partial | ✅ Yes (preferred) |
+| `Aspire.Hosting.Azure.CognitiveServices` | ❌ No | ✅ Yes (preferred) | ❌ No |
+| `Aspire.Hosting.OpenAI` | ✅ Yes (preferred) | ✅ Yes | ❌ No |
+| `Aspire.Hosting.GitHub.Models` | ⚠️ Partial | ❌ No | ✅ Yes (preferred) |
 
 ### Legend
 
@@ -33,7 +33,7 @@ In general, use **Aspire.Azure.AI.Inference** to connect to Azure hosted models,
 
 ### Azure AI Foundry
 
-For Azure AI Foundry resources, use the **Aspire.Azure.AI.Inference** client integration. This provides the best compatibility with the diverse range of models available through Azure AI Foundry.
+For Azure AI Foundry resources, use the **Aspire.Azure.AI.Inference** client integration. This provides the best compatibility with the diverse range of models available through Azure AI Foundry. For more information, see [Azure AI Foundry integration](azureai-foundry-integration.md).
 
 #### Hosting integration
 
@@ -58,7 +58,7 @@ builder.AddAzureChatCompletionsClient("foundry");
 
 ### Azure Cognitive Services (Azure OpenAI)
 
-For Azure OpenAI resources, use the **Aspire.Azure.AI.OpenAI** client integration for full Azure-specific features and authentication support.
+For Azure OpenAI resources, use the **Aspire.Azure.AI.OpenAI** client integration for full Azure-specific features and authentication support. For more information, see [Azure OpenAI integration](azureai-openai-integration.md).
 
 #### Hosting integration
 
@@ -83,7 +83,7 @@ builder.AddAzureOpenAIClient("openai");
 
 ### Direct OpenAI
 
-For direct OpenAI API access, use the **Aspire.OpenAI** client integration.
+For direct OpenAI API access, use the **Aspire.OpenAI** client integration. For more information, see [Aspire OpenAI integration (Preview)](../openai/openai-integration.md).
 
 #### Hosting integration
 
@@ -108,7 +108,7 @@ builder.AddOpenAIClient("openai");
 
 ### GitHub Models
 
-For GitHub Models, use the **Aspire.Azure.AI.Inference** client integration for the best compatibility with the GitHub Models API.
+For GitHub Models, use the **Aspire.Azure.AI.Inference** client integration for the best compatibility with the GitHub Models API. For more information, see [.NET Aspire GitHub Models integration (Preview)](../github/github-models-integration.md).
 
 #### Hosting integration
 
@@ -156,7 +156,7 @@ Endpoint={EmulatorServiceUri};Key={ApiKey}
 **Deployment:**
 
 ```
-{Parent};DeploymentId={DeploymentName};Model={DeploymentName}
+{Parent};Deployment={DeploymentName}
 ```
 
 #### Aspire.Hosting.Azure.CognitiveServices
@@ -164,7 +164,7 @@ Endpoint={EmulatorServiceUri};Key={ApiKey}
 **Deployment:**
 
 ```
-{ConnectionString};Deployment={deploymentName}
+{ConnectionString};Deployment={DeploymentName}
 ```
 
 #### Aspire.Hosting.OpenAI
@@ -176,7 +176,7 @@ Endpoint={Endpoint};Key={Key};Model={Model}
 #### Aspire.Hosting.GitHub.Models
 
 ```
-Endpoint=https://models.github.ai/inference;Key={Key};Model={Model};DeploymentId={Model}
+Endpoint=https://models.github.ai/inference;Key={Key};Model={ModelName}
 ```
 
 ### Client integration connection string requirements
@@ -208,8 +208,10 @@ This integration is a superset of `Aspire.OpenAI` and supports `TokenCredential`
 Expects connection strings in the format:
 
 ```
-Endpoint={Endpoint};EndpointAIInference={EndpointAIInference};Key={Key};DeploymentId={DeploymentId}
+Endpoint={Endpoint};EndpointAIInference={EndpointAIInference};Key={Key};Deployment={DeploymentName};Model={ModelName}
 ```
+
+Uses either `Deployment` or `Model` (in that order). `Deployment` is set by `Aspire.Hosting.Azure.CognitiveServices` while `Model` is set by `Aspire.Hosting.GitHub.Models`.
 
 Uses `EndpointAIInference` if available, otherwise `Endpoint`.
 
@@ -217,6 +219,7 @@ Uses `EndpointAIInference` if available, otherwise `Endpoint`.
 
 - [Azure AI Foundry integration](azureai-foundry-integration.md)
 - [Azure OpenAI integration](azureai-openai-integration.md)
+- [Aspire OpenAI integration (Preview)](../openai/openai-integration.md)
 - [Azure AI Inference integration](azureai-inference-integration.md)
 - [GitHub Models integration](../github/github-models-integration.md)
 - [.NET Aspire integrations overview](../fundamentals/integrations-overview.md)
